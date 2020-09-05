@@ -1,5 +1,5 @@
 #define d_max 7 //taille maximale pile
-
+//iwannakms 
 typedef struct
 { 
 	int Tab[d_max];
