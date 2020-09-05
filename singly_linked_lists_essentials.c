@@ -64,6 +64,20 @@ cellule *insereD(int v , cellule *L)
 	L=node;//mark the node as the head of the list
 	return(L);
 }
+liste *insertM(liste *l,int ind,int val)
+{
+        liste *p=l;
+        liste *new;
+        int i;
+        new=creer(val);
+        for(i=0;i<ind-1;i++)
+        {
+                p=p->suivant;
+        }
+        new->suivant=p->suivant;
+        p->suivant=new;
+        return l;
+}
 
 //add a new node at the end of a list 
 
