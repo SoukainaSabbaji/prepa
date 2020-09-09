@@ -1,0 +1,1065 @@
+//singly linked lists 
+
+#include <stdlib.h>
+#include <stdio.h> 
+
+//structure definition
+
+typedef struct maillon
+{
+	int valeur;
+	struct maillon *suivant;
+}cellule;
+
+//create linked list 
+
+cellule *creer(int n)
+{
+	cellule *lis;
+	lis = (cellule*)malloc(sizeof(cellule));
+	lis->valeur = n;
+		lis->suivant = NULL;
+	return(lis);
+}
+
+//print the list 
+
+void affichage(cellule *L)
+{
+	cellule *pc = L;
+	while(pc != NULL)
+	{
+		printf("%d ",pc->valeur);
+		pc = pc->suivant;
+	}
+}
+
+//find the last element of a list 
+
+cellule *dernier(cellule *L)
+{
+	cellule *p = L;
+	if(p!=NULL)
+	{
+		while (p->suivant != NULL)
+		{
+			p = p->suivant;
+		}
+	}
+	return p;
+}
+
+//add a new node at the beginning of the list 
+
+cellule *insereD(int v , cellule *L)
+{
+	cellule *node; // create a new node
+	node = (cellule*)malloc(sizeof(cellule));
+
+	if(!node)
+	{
+		printf("allocation non reussie");
+		exit(1);
+	}
+	node->valeur=v;
+	node->suivant=L;//point the next of the new node to the head of the list
+	L=node;//mark the node as the head of the list
+	return(L);
+}
+liste *insertM(liste *l,int ind,int val)
+{
+        liste *p=l;
+        liste *new;
+        int i;
+        new=creer(val);
+        for(i=0;i<ind-1;i++)
+        {
+                p=p->suivant;
+        }
+        new->suivant=p->suivant;
+        p->suivant=new;
+        return l;
+}
+
+//add a new node at the end of a list 
+
+cellule *insereF(int v,cellule *L)
+{
+	cellule *node,*p; 
+	node = (cellule*)malloc(sizeof(cellule));
+	if(!node)
+	{
+		printf("allocation non reussie");
+		exit(1);
+	}
+	node->valeur = v;
+	node->suivant = NULL;//its the last node so it point to a null
+
+	if (L==NULL)
+		L=node;//if the list is empty let the added node be the only one there 
+	else 
+	{
+		p=dernier(L);//we point p to the last case of the list
+		p->suivant=node;//then the next of that last case is the node we are inserting so it would become the new last case 
+	}
+	return(L);
+}
+
+//function that returns the size of the list 
+
+int taille(cellule *L)
+{
+	int k=0;
+	cellule *p=L;// a pointer that points to the first node of the list 
+	while(p!=NULL)
+	{
+		k++;
+		p=p->suivant;
+	}
+	return k;
+}
+
+//function that searches for a certain element in a list 
+
+cellule *recherche(cellule *L,int val)
+{
+	cellule *p=L;
+	while((p!=NULL)&&(p->valeur!=val))
+	{
+		p=p->suivant;
+	}
+	return(p);
+}
+
+//function that deletes a node located at the beginning of the list 
+//When removing the node at the beginning of the list there is no relinking 
+//of nodes to be performed, since the first node has no preceding node
+
+cellule *supprimerD(cellule *L)
+{
+	cellule *node;
+	node = L;//node is also pointing to the beginning of the list
+	L=L->suivant;// we move L a case to the front
+	free(node);//we free the first case of the list
+	return(L);
+}
+
+cellule * SuppMilieu (cellule *noeud, cellule *L) 
+{
+
+	cellule *precedent;
+	precedent= L;	
+
+while ((precedent->suivant != noeud)) //we search for the node 
+{
+
+	precedent=precedent->suivant;
+
+}
+precedent->suivant= noeud->suivant;//we skip the node we want to delete 
+free(noeud);
+return(L);
+}
+//To delete the last node of a linked list, find the second last node
+//and make the next pointer of that node null.
+
+cellule *suppF(cellule *L)
+{
+	cellule *ptr =L;
+	cellule *t;
+  	if(L->suivant==NULL)
+  	{
+    	free(L);
+    	L=NULL;
+  	}
+  	else
+  	{
+     	while(ptr->suivant != NULL)
+     	{
+        	t=ptr;
+        	ptr=ptr->suivant;
+     }
+    free(t->suivant);
+    t->suivant=NULL; 
+  }    
+  return L;
+}
+  
+void bubbleSort(cellule *start) 
+{ 
+    int swapped, i; 
+    cellule *ptr1; 
+    cellule  *lptr = NULL; 
+  
+    /* Checking for empty list */
+    if (start == NULL) 
+        return; 
+  
+    do
+    { 
+        swapped = 0; 
+        ptr1 = start; 
+  
+        while (ptr1->suivant != lptr) 
+        { 
+            if (ptr1->valeur > ptr1->suivant->valeur) 
+            {  
+                swap(ptr1, ptr1->suivant); 
+                swapped = 1; 
+            } 
+            ptr1 = ptr1->suivant; 
+        } 
+        lptr = ptr1; 
+    } 
+    while (swapped); 
+} 
+  
+/* function to swap data of two nodes a and b*/
+void swap(cellule *a,cellule *b) 
+{ 
+    int temp = a->valeur; 
+    a->valeur = b->valeur; 
+    b->valeur = temp; 
+} 
+//doubly linked lists 
+#include <stdio.h>
+#include <stdlib.h> 
+
+//structure definition 
+
+typedef struct maillon
+{
+    int valeur;
+    struct maillon *precedent;
+    struct maillon *suivant;
+}cellule;
+
+cellule *head;
+
+cellule *creer(int v)
+{
+    cellule *L;
+    L = (cellule*)malloc(sizeof(cellule));
+    L->valeur=v;
+    L->precedent=NULL;
+    L->suivant=NULL;
+
+    return(L);
+}
+
+void affichage(cellule *L)
+{
+    cellule *p=L;
+    while(p!=NULL)
+    {
+        printf("%d",p->valeur);
+        p=p->suivant;
+    }
+
+}
+
+cellule *ajouterd(int v , cellule *L)
+{
+    cellule *node;//create the new node 
+    node=(cellule*)malloc(sizeof(cellule));
+    node->valeur=v;
+    node->precedent=NULL;//its situated at the beginning of the list
+    node->suivant=L;//link the next pointer to the first case of the list
+    if(L!=NULL)
+    {
+        L->precedent = node;//change previous of head node to the new node 
+    }
+    L=node;//move the head to point to the new node 
+    return(L);
+}
+
+cellule *ajouterF(cellule *L,int v)
+{
+    cellule *node,*p;
+    node=(cellule*)malloc(sizeof(cellule));
+    node->valeur=v;
+    node->suivant=NULL;
+    if(L==NULL)
+    L=node;
+    else
+    {
+        p=dernier(L);
+        p->suivant=node;
+    }
+    return(L);
+} 
+
+cellule *supprD(cellule *L)
+{
+    cellule *ptr=L;
+    if(ptr==NULL)
+    {
+        printf("liste vide !");
+    }
+    else
+    {
+        L=L->suivant;
+    if(L!=NULL)
+    L->precedent=NULL;
+    }
+    free(ptr);
+    // sort methods 
+    element* tri_bulle(element*l)
+{
+	int i,cmp,k;
+	element* p,*s;
+	if(l==NULL)
+	{
+		return l;
+	}
+	do
+	{
+		cmp=0;
+		p=l;
+		s=l->suivant;
+		while(s!=NULL)
+		{
+			if( p->val > s->val)
+			{
+				k=p->val;
+				p->val=s->val;
+				s->val=k;
+				cmp++;
+			}
+			p=p->suivant;
+			s=s->suivant;
+		}
+	}
+	while(cmp>0);
+	return l;
+}
+
+element* tri_selection(element*l)
+{
+	element*p,*ps,*finliste;
+	int v,max,n;
+	n=tailleliste(l);
+	while(n>0)
+	{
+		finliste=recherch_po(l,n);
+		max=l->val;
+		p=l;ps=l;
+		while(p!=finliste)
+		{
+			if(p->val>max)
+			{
+				max=p->val;
+				ps=p;
+			}
+			p=p->suivant;
+		}
+		while(ps!=finliste)
+		{
+			ps->val=ps->suivant->val;
+			ps=ps->suivant;}
+		ps->val=max;
+		n--;
+	}
+	return l;
+}
+// les files 
+#include <stdlib.h>
+#include <stdio.h>
+#define N 50
+
+//struct definition 
+
+typedef struct c
+{
+    int Tab[N];
+    int tete;
+    int queue;
+}File;
+
+// lors de l'initialisation queue = tete = 0
+
+File initialisation()
+{
+    File f;
+    f.tete = 0;
+    f.queue = 0;
+    return f;
+}
+
+//File est vide => tete = queue
+//file est pleine queue = N (dimension)
+int est_vide(File f)
+{
+    if(f.tete == f.queue)
+    return 1;
+    else
+    return 0;
+}
+//fonction enfiler 
+//1-check if its full or not
+//2-queue = new element
+//3-queue++ 
+//4-return file
+
+File enfiler(File f , int val)
+{
+    if(F.queue >= N)
+    exit(-1);
+    f.Tab[f.queue] = val;
+    f.queue++;
+    return f;
+}
+
+//fonction defiler
+//1-check if empty
+//f.tete++
+//return f
+File defiler(File f)
+{
+    if(est_vide(f)==1)
+    exit(-1);
+    f.tete++;
+    return f;
+}
+/*----------------------------DYNAMIC REPRESENTATION----------------------------------*/
+//struct and types definition
+typedef struct cellule
+{
+    int valeur;
+    struct cellule *suivant;
+}cellule;
+
+typedef struct 
+{
+    cellule *tete;
+    cellule *queue;
+}File;
+File F;
+
+File initialise(File f)
+{
+    f.tete = NULL;
+    f.queue = NULL;
+    return f;
+}
+
+int sommet(File f)
+{
+    if(f.tete == f.queue)//file vide
+    exit(-1);
+    return(f.tete)->valeur;
+}
+
+//fonction enfiler 
+File enfiler(File f ,int v)
+{
+    cellule *ptr; //create the new element
+    ptr=(cellule*)malloc(sizeof(cellule));
+    if(ptr==NULL)
+    exit(-1);//allocation non reussie
+    ptr->valeur = v ;//put data in it 
+    ptr->suivant = NULL;//and point its next to null since its gonna be at the end of the Q
+    if(f.queue == NULL)//if its empty make the new element both the start n the end of the Q
+    f.tete = f.queue = ptr; 
+    else 
+    f.queue->suivant = ptr;//make the element after the end of the queue = new element
+    f.queue = ptr;//make the new element the last elemet in the Q 
+    return f; 
+}
+//fonction defiler
+File defiler(File f)
+{
+    cellule *p; //ptr to the head of the list 
+    if(f.tete == NULL)
+    {
+      exit(-1);  
+    }
+    p = f.tete;
+    f.tete = (f.tete)->suivant;
+    free(p);
+    if(f.tete == NULL)
+    f.queue = NULL;
+    return f;
+}
+//end 
+//les piles 
+#define d_max 7 //taille maximale pile
+//iwannakms 
+typedef struct
+{ 
+	int Tab[d_max];
+	int sommet;
+}pile;
+
+pile initialisation()
+{ 
+	Pile p;
+	p.sommet = -1;
+
+	return p; 
+}
+
+int est_vide(pile p)
+{
+	if(p.sommet==-1)
+		return 1;
+	else 
+		return 0;
+}
+
+pile empiler (int e, Pile p) 
+{
+	if(p.sommet >= d_max-1) 
+	{
+		printf("Erreur: pile pleine !\n");
+		exit(-1);
+	}
+	(p.sommet)++;
+	(p.tab)[p.sommet]=e;
+	return p; 	
+}
+
+int depiler(Pile p) 
+{ 
+	int x;
+	if(est_vide(p)==1) 
+	{
+		printf("Erreur: pile vide");
+		exit(-1);
+	}
+	x=Tab[p.sommet];
+	p.sommet--;
+	return x;
+}
+//representation dynamique
+typedef struct Cellule 
+{
+	int valeur;
+	struct Cellule*suivant;
+}Cellule;
+typedef cellule*Pile;
+
+int tete(Pile p) 
+{
+	//pré-condition: pile non vide !
+	if(p==NULL) 
+	{
+		printf("Erreur: pile vide !\n");
+		exit(-1); 
+	}
+	return p->valeur; 
+}
+
+pile empiler(int e,Pile p)
+{
+	cellule *ptr;
+	ptr=(cellule*)malloc(sizeof(cellule));
+	if(ptr==NULL)
+	{
+		exit(-1);
+	}
+	ptr->valeur = e;
+	ptr->suivant = p;
+	p=ptr;
+	return p;
+}
+
+Pile depiler(Pile p) 
+{
+	cellule *ptr = p;
+	if (p==NULL) 
+	{
+		printf("Erreur: pile vide !\n");
+		exit(-1); 
+	}
+	p=p->suivant;
+	free(ptr);
+	return p;
+}
+
+    return(L);    
+}
+
+
+cellule *dernier(cellule *L)
+{
+    cellule *ptr=L;
+    if(ptr!=NULL)
+    {
+        while(ptr->suivant != NULL)
+        {
+           ptr = ptr->suivant; 
+        }
+        
+    }
+    return (ptr);
+}
+
+void supprF(cellule *L)
+{
+    cellule *NodeToDel;
+ 
+    if(L == NULL)
+    {
+        printf(" Delete is not possible. No data in the list.\n");
+    }
+    else
+    {
+        NodeToDel = L;
+        L = L->precedent;    // move the previous address of the last node to 2nd last node
+        L->suivant = NULL;     // set the next address of last node to NULL
+        free(NodeToDel);            // delete the last node
+    }
+}
+
+void DlListDeleteAnyNode(int pos,cellule*L)
+{
+    cellule *curNode;
+    int i;
+ 
+    curNode = L;
+    for(i=1; i<pos && curNode!=NULL; i++)
+    {
+        curNode = curNode->suivant;
+    }
+ 
+    if(pos == 1)
+    {
+        supprD(L);
+    }
+    else if(curNode == dernier(L))
+    {
+        supprF(L);
+    }
+    else if(curNode != NULL)
+    {
+        curNode->precedent->suivant = curNode->suivant;
+        curNode->suivant->precedent = curNode->precedent;
+ 
+        free(curNode); //Delete the n node
+    }
+    else
+    {
+        printf(" The given position is invalid!\n");
+    }
+} 
+//teacher's method 
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+struct ville{
+	char nom[20];
+	int nbr;
+};
+typedef struct ville Ville;
+int main()
+{
+	Ville t[100];
+	Ville tmp;
+	int i,j,n;
+	printf("Donnez le nombre de villes:\t");
+	scanf("%d",&n);
+	for(i=0;i<n;i++)
+	{
+		printf("Donnez le nom de la ville N %d:\t",i+1);
+		scanf("%s",t[i].nom);
+		printf("Donnez le nombre d'habitants de cette ville:\t");
+		scanf("%d",&t[i].nbr);
+	}
+	for(i=0;i<n;i++)
+		printf("-- Le nombre d'habitants de %s est : %d\n",t[i].nom,t[i].nbr);
+	for(i=0;i<n-1;i++)
+		for(j=0;j<n-i-1;j++)
+		{
+			if(t[j].nbr>t[j+1].nbr)
+			{
+				strcpy(tmp.nom,t[j].nom);
+				tmp.nbr = t[j].nbr;
+
+				strcpy(t[j].nom,t[j+1].nom);
+				t[j].nbr = t[j+1].nbr;
+
+				strcpy(t[j+1].nom,tmp.nom);
+				t[j+1].nbr = tmp.nbr;
+			}
+		}
+	printf("Les villes dans l'ordre croissant du nombre d'habitants:\n");
+	for(i=0;i<n;i++)
+		printf("-- Le nombre d'habitants de %s est : %d\n",t[i].nom,t[i].nbr);
+	return 0;
+}
+// one exercice 
+#include <stdio.h> 
+#include <stdlib.h> 
+
+struct 
+{
+    int jour;
+    int mois;
+    int annee;
+}Date;
+
+struct 
+{
+    Date datex;
+    int nExamen;
+    string matiere;
+    double coeff;
+}Examen;
+
+void afficheExamen(struct Examen Ex)
+{
+    printf("le numero d'examen est %d ",Ex.datex);
+    printf("la matiere est %s ",Ex.matiere);
+    printf("le coefficient est %f ",Ex.coeff);
+    printf("la date de l'examen est %d/%d/%d ",Ex.datex.jour,Ex.datex.mois,Ex.datex.annee);
+}
+
+//dynamic array memory allocation
+struct Examen *Tab;
+Tab=(struct Examen*)malloc(n*sizeof(struct Examen));
+
+void afficheToutExamen (struct Examen*Tab, int n)
+{
+    Tab=(struct Examen*)malloc(n*sizeof(struct Examen)); //better to put here 
+    int i;
+    for (i=0;i<n;i++)
+    {
+        afficheExamen(Tab[i]);
+    }
+}
+//another one
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h> 
+
+typedef struct etudiant
+{
+    char nom[20];
+    char prenom[20];
+    float note;
+}etudiant;
+
+//enter a list of students then print a list of students 
+//with a mark equal to or higher than 10
+
+int main()
+{
+    int n,i;
+    etudiant *T;
+    printf("donnez le nombre des etudiants \n");
+    scanf("%d",n);
+    T=(etudiant*)malloc(n*sizeof(etudiant));
+    printf("entrez les informations des etudiants \n");
+    for(i =0 ;i < n ; i++)
+    {
+        printf("donnez les informations du etudiants n %d \n",i);
+        scanf("%s",(T+i)->nom);
+        scanf("%s",(T+i)->prenom);
+        scanf("%d",(T+i)->note);
+    }
+    for(i = 0 ; i < n ; i++)
+    {
+        if((T+i)->note >= 10)
+        {
+            printf("nom : %s \n",(T+i)->nom);
+            printf("prenom : %s \n",(T+i)->prenom);
+            printf("note : %d \n",(T+i)->note);
+        }
+    }
+    for (i = 0 ; i < n ; i++)
+    {
+        if((T+i)->note < 10)
+        {
+            (T+i)->note += 1;
+        }
+        if((T+i)->note >= 10 && (T+i)->note <= 15)
+        {
+            (T+i)->note += 0.5;
+        }
+    }
+    printf("informations apres modification :\n");
+     for(i = 0 ; i < n ; i++)
+    {    
+        printf("nom : %s \n",(T+i)->nom);
+        printf("prenom : %s \n",(T+i)->prenom);
+        printf("note : %d \n",(T+i)->note);
+    }
+}
+//exercice des piles 
+#include <stdio.h>
+#include <stdlib.h>
+#define N 50
+
+typedef struct
+{
+	int Tab[N];
+	int sommet;
+}pile;
+
+pile *init()
+{
+	pile *p;
+	p=(pile*)malloc(sizeof(pile));
+	p->sommet=-1;
+	return p;
+}
+
+int estvide(pile *p)
+{
+	if(p->sommet == -1)
+		return 1;
+	else 
+		return 0;
+}
+
+void empiler(pile *p,int elm)
+{
+	if(p->sommet >= N)
+		exit(-1);
+	else 
+	{
+		p->sommet++;
+		p->Tab[p->sommet]=elm;
+	}
+}
+
+int depiler(pile *p)
+{
+	int elm;
+	if(estvide(p)==1)
+		exit(-1);
+	else 
+	{
+		elm = p->Tab[p->sommet];
+		p->sommet--;}
+	return elm;
+}
+
+void afficher(pile *p)
+{
+	int i;
+	for (i=p->sommet;i>=0;i--)
+	{
+		printf("%d \n",p->Tab[i]);
+	}
+}
+
+int sommet(pile *p)
+{
+	if(estvide(p)==1)
+		return 62;
+	else 
+		return (p->Tab[p->sommet]);
+}
+
+void deplacer(pile *p1,pile *p2)
+{
+	pile *p3;
+	int s;
+	p3=init();
+	while (estvide(p1) != 1)
+	{
+		s=depiler(p1);
+		if(s%2 == 0)
+			empiler(p3,s);
+		else 
+			empiler(p2,s);
+	}
+	while(estvide(p3) != 1)
+	{
+		empiler(p2,depiler(p3));
+	}
+}
+
+int main()
+{
+	int dim,i,s,sum;
+	pile *p1,*p2,*p3;
+	p1=init();
+	p2=init();
+	printf("donnez le nombre de valeurs \n");
+	scanf("%d",&sum);
+	printf("faites le saisi des valeurs \n");
+	for (i=0 ; i < sum ;i++)
+	{
+		scanf("%d",&s);
+		empiler(p1,s);
+	}
+	printf("voici votre pile \n");
+	afficher(p1);
+	sum=sommet(p1);
+	printf("le sommet de votre pile est %d \n",sum);
+	deplacer(p1,p2);
+	printf("votre pile apres modification \n");
+	afficher(p2);
+	return 0;
+}
+//yarbi nmot 
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct liste
+{
+  int nombre;
+  struct liste *suivant;
+} liste;
+
+//creates head of list and keeps creating nodes  
+void allocation_dernier(liste **ptr)
+//double pointer to use it for both looping and using as argument
+{
+	if (*ptr == NULL)
+	{
+		*ptr = (liste *)malloc(sizeof(liste));
+		(*ptr)->suivant = NULL;
+	}
+	else
+	{
+		while((*ptr)->suivant != NULL)
+			(*ptr) = (*ptr)->suivant;
+		(*ptr)->suivant = (liste *)malloc(sizeof(liste));
+		(*ptr) = (*ptr)->suivant;
+		(*ptr)->suivant = NULL;
+	}
+}
+//passes head as argument in case pos = 1
+void	allocation_position(liste **tete, int pos)
+{
+	liste *ptr;//the element we use to move inside the program
+	liste *derriere;//the node before ptr 
+
+	if (pos <= 1)
+	{
+		derriere = (liste *)malloc(sizeof(liste));
+		derriere->suivant = *tete;
+		*tete = derriere;
+	}
+	else
+	{
+		ptr = *tete;//we should always start from the head as the looping method induces 
+		for (int i = 1; i < pos; i++)
+		{
+			if (ptr == NULL)
+				break;
+			derriere = ptr;
+			ptr = ptr->suivant;
+		}
+		derriere->suivant = (liste *)malloc(sizeof(liste));
+		derriere = derriere->suivant;
+		derriere->suivant = ptr;
+	}
+}
+
+void	afficher_liste(liste *tete)
+{
+	while (tete != NULL)
+	{
+		printf("%d ", tete->nombre);
+		tete = tete->suivant;
+	}
+	printf("\n");
+}
+
+void	trier(liste *tete)
+{
+	int		ech;
+	int		temp;
+	liste	*ptr;
+	liste	*derriere;
+
+	derriere = NULL;
+	do
+	{
+		ech = 0;
+		ptr = tete;
+		while (ptr->suivant != derriere)
+		{
+			if (ptr->nombre > ptr->suivant->nombre)
+			{
+				temp = ptr->nombre;
+				ptr->nombre = ptr->suivant->nombre;
+				ptr->suivant->nombre = temp;
+				ech = 1;
+			}
+			ptr = ptr->suivant;
+		}
+		derriere = ptr;
+	} while (ech);
+
+}
+
+void	separer(liste *tete)
+{
+	liste	*ptr;
+	liste	*pair = NULL;
+	liste	*pair_tete;
+	liste	*impair = NULL;
+	liste	*impair_tete;
+	int		i = 0, j = 0;
+	ptr = tete;
+	while(ptr != NULL)
+	{
+		if ((ptr->nombre % 2) == 0)
+		{
+			allocation_dernier(&pair);
+			if (i == 0)
+				pair_tete = pair;
+			pair->nombre = ptr->nombre;
+			i++;
+		}
+		else if ((ptr->nombre % 2) == 1)
+		{
+			allocation_dernier(&impair);
+			if (j == 0)
+				impair_tete = impair;
+			impair->nombre = ptr->nombre;
+			j++;
+		}
+		ptr = ptr->suivant;
+	}
+	printf("la liste des elements  pair: \n ");
+	afficher_liste(pair_tete);
+	printf("la liste des elements impairs \n: ");
+	afficher_liste(impair_tete);
+}
+int main ()
+{
+	liste		*ptr = NULL;
+	liste		*sv = NULL;
+	liste		*tete = NULL;
+	int			t;
+	int			i;
+
+	printf("entrez le nombre des elements: ");
+	scanf("%d", &t);
+	if (t == 0)
+		return (-1);
+	for (i = 0; i < t; i++)
+	{
+		allocation_dernier(&ptr);
+		if (i == 0)
+			tete = ptr;
+		printf("entrez l'entier: ");
+		scanf("%d", &(ptr->nombre));
+	}
+	afficher_liste(tete);
+	printf("entrer position: ");
+	scanf("%d", &t);
+	allocation_position(&tete, t);
+	ptr = tete;
+	for (i = 1; i < t; i++)
+	{
+		if (ptr->suivant == NULL)
+			break;
+		ptr = ptr->suivant;
+	}
+	printf("entrez l'entier: ");
+	scanf("%d", &(ptr->nombre));
+	afficher_liste(tete);
+	printf("apres tri: ");
+	trier(tete);
+	afficher_liste(tete);
+	separer(tete);
+  return 0;
+}
